@@ -1,5 +1,11 @@
+var example = require('./example');
+
+var routing_table = {
+	'/example': {
+		get: example.index
+	}
+};
+
 exports.init = function(app) {
-	app.get('/example', function(req, res){
-	    res.render('example');
-	});	
+	app.map(routing_table);
 }

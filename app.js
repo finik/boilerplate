@@ -2,6 +2,22 @@ var express = require('express');
 var router = require('./code/router');
 var app = express();
 
+app.map = function(a, route){
+    route = route || '';
+    for (var key in a) {
+        switch (typeof a[key]) {
+        // { '/path': { ... }}
+        case 'object':
+            app.map(a[key], route + key);
+        break;
+        // get: function(){ ... }
+        case 'function':
+            app[key](route, a[key]);
+        break;
+        }
+    }
+};
+
 app.configure(function(){
     app.engine('.html', require('ejs').__express);
     app.set('views', __dirname + '/views');
