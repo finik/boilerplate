@@ -1,8 +1,8 @@
-var example = require('./example');
+var main = require('./main');
 
 var routing_table = {
-	'/example': {
-		get: example.index
+	'/': {
+		get: main.index
 	}
 };
 
