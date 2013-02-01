@@ -8,4 +8,4 @@ var routing_table = {
 
 exports.init = function(app) {
 	app.map(routing_table);
-}
+};

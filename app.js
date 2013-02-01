@@ -18,26 +18,28 @@ app.map = function(a, route){
     }
 };
 
-app.configure(function(){
-    app.engine('.html', require('ejs').__express);
-    app.set('views', __dirname + '/views');
-    app.set('view engine', 'html');
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
+app.engine('.html', require('ejs').__express);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+if ('development' == app.get('env')) {
+    console.log('Development environment, serving files from /static');
     app.use(express.static(__dirname + '/static'));
-    app.use(express.cookieParser());
-    app.use(express.session({ secret: "somesecret" }));
-    app.enable("jsonp callback");
-});
+} else {
+    console.log('Production environment, serving precompiled files from /static-compiled');
+    app.use(express.static(__dirname + '/static-compiled'));
+}
+app.use(express.cookieParser());
+app.use(express.session({ secret: "somesecret" }));
+app.enable("jsonp callback");
 
-app.configure('development', function(){
+if ('development' == app.get('env')) {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     // app.use(express.logger({ format: ':method :url' }));
-});
-
-app.configure('production', function(){
+} else {
     app.use(express.errorHandler());
-});
+}
 
 router.init(app);
 
